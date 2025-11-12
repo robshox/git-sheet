@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Participant {
   id: string;
@@ -20,6 +20,11 @@ export default function SecretSanta() {
   const [newEmail, setNewEmail] = useState('');
   const [selectedParticipant, setSelectedParticipant] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'manage' | 'assignments'>('manage');
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const addParticipant = () => {
     if (newName.trim() && newEmail.trim()) {
@@ -77,105 +82,153 @@ export default function SecretSanta() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-red-600 via-green-600 to-red-500 relative overflow-hidden">
+      {/* Animated Snowflakes - Only render on client to avoid hydration mismatch */}
+      {isMounted && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-white text-2xl animate-snow"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${5 + Math.random() * 10}s`,
+                opacity: 0.7,
+              }}
+            >
+              ❄
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Floating Ornaments - Only render on client to avoid hydration mismatch */}
+      {isMounted && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${3 + Math.random() * 4}s`,
+              }}
+            >
+              {['🎄', '🎁', '🎅', '🦌', '🔔', '⭐'][Math.floor(Math.random() * 6)]}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="container mx-auto px-4 py-12 max-w-4xl relative z-10">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            🎅 Switch Dimension Secret Santa
+          <h1 className="text-6xl md:text-7xl font-bold text-yellow-300 mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse">
+            🎅 Switch Dimension Secret Santa 🎄
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Organize your Secret Santa gift exchange
+          <p className="text-2xl text-yellow-100 font-semibold drop-shadow-lg">
+            🎁 Organize your Secret Santa gift exchange! 🎁
           </p>
         </div>
 
         {/* Mode Toggle */}
         <div className="flex justify-center mb-8">
-          <div className="inline-flex rounded-lg bg-white dark:bg-gray-800 p-1 shadow-md">
+          <div className="inline-flex rounded-lg bg-yellow-300 p-2 shadow-2xl border-4 border-yellow-400">
             <button
               onClick={() => setViewMode('manage')}
-              className={`px-6 py-2 rounded-md font-medium transition-all ${
+              className={`px-8 py-3 rounded-md font-bold text-lg transition-all transform hover:scale-110 ${
                 viewMode === 'manage'
-                  ? 'bg-red-500 text-white shadow-md'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-red-600 text-yellow-200 shadow-lg border-4 border-red-800'
+                  : 'bg-green-600 text-yellow-200 hover:bg-green-700 border-4 border-green-800'
               }`}
             >
-              Manage Participants
+              🎯 Manage Participants
             </button>
             <button
               onClick={() => setViewMode('assignments')}
-              className={`px-6 py-2 rounded-md font-medium transition-all ${
+              className={`px-8 py-3 rounded-md font-bold text-lg transition-all transform hover:scale-110 ${
                 viewMode === 'assignments'
-                  ? 'bg-green-500 text-white shadow-md'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-green-600 text-yellow-200 shadow-lg border-4 border-green-800'
+                  : 'bg-red-600 text-yellow-200 hover:bg-red-700 border-4 border-red-800'
               }`}
             >
-              View Assignments
+              🎁 View Assignments
             </button>
           </div>
         </div>
 
         {viewMode === 'manage' ? (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8">
+          <div className="bg-gradient-to-br from-yellow-200 via-red-100 to-green-200 rounded-2xl shadow-2xl p-8 border-8 border-yellow-400 relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute top-4 right-4 text-6xl animate-bounce">🎄</div>
+            <div className="absolute bottom-4 left-4 text-5xl animate-bounce" style={{ animationDelay: '0.5s' }}>🎁</div>
+            
             {/* Add Participant Form */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                Add Participants
+            <div className="mb-8 relative z-10">
+              <h2 className="text-4xl font-bold text-red-700 mb-6 drop-shadow-lg flex items-center gap-3">
+                <span className="text-5xl">👥</span> Add Participants
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder="🎅 Name"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="px-5 py-4 border-4 border-red-500 rounded-xl focus:ring-4 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-red-800 font-semibold text-lg placeholder-red-400 shadow-lg"
                 />
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="📧 Email"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="px-5 py-4 border-4 border-green-500 rounded-xl focus:ring-4 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-green-800 font-semibold text-lg placeholder-green-400 shadow-lg"
                 />
               </div>
               <button
                 onClick={addParticipant}
-                className="w-full md:w-auto px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+                className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-yellow-200 font-bold text-xl rounded-xl transition-all shadow-2xl hover:shadow-red-500/50 transform hover:scale-105 border-4 border-red-800"
               >
-                Add Participant
+                ➕ Add Participant 🎉
               </button>
             </div>
 
             {/* Participants List */}
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                Participants ({participants.length})
+            <div className="relative z-10">
+              <h2 className="text-4xl font-bold text-green-700 mb-6 drop-shadow-lg flex items-center gap-3">
+                <span className="text-5xl">🎊</span> Participants ({participants.length})
               </h2>
               {participants.length === 0 ? (
-                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                  <p className="text-lg">No participants yet. Add some to get started!</p>
+                <div className="text-center py-12 bg-white/80 rounded-xl border-4 border-dashed border-yellow-500">
+                  <p className="text-2xl font-bold text-red-600">🎄 No participants yet! 🎄</p>
+                  <p className="text-lg text-green-700 mt-2">Add some to get started! 🎁</p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {participants.map((participant) => (
+                <div className="space-y-4">
+                  {participants.map((participant, index) => (
                     <div
                       key={participant.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center justify-between p-5 bg-gradient-to-r from-white via-yellow-50 to-white rounded-xl hover:shadow-2xl transition-all transform hover:scale-[1.02] border-4 border-green-500 shadow-lg"
                     >
-                      <div>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          {participant.name}
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {participant.email}
-                        </p>
+                      <div className="flex items-center gap-4">
+                        <span className="text-3xl">{['🎅', '🎄', '🎁', '🦌', '🔔', '⭐'][index % 6]}</span>
+                        <div>
+                          <p className="font-bold text-xl text-red-700">
+                            {participant.name}
+                          </p>
+                          <p className="text-sm font-semibold text-green-700">
+                            {participant.email}
+                          </p>
+                        </div>
                       </div>
                       <button
                         onClick={() => removeParticipant(participant.id)}
-                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors"
+                        className="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-yellow-200 font-bold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-110 border-4 border-red-800"
                       >
-                        Remove
+                        ❌ Remove
                       </button>
                     </div>
                   ))}
@@ -185,46 +238,49 @@ export default function SecretSanta() {
 
             {/* Assign Button */}
             {participants.length >= 2 && (
-              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-8 pt-8 border-t-4 border-yellow-500 relative z-10">
                 <button
                   onClick={assignSecretSantas}
-                  className="w-full px-6 py-4 bg-green-500 hover:bg-green-600 text-white font-semibold text-lg rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                  className="w-full px-8 py-6 bg-gradient-to-r from-green-600 via-yellow-500 to-green-600 hover:from-green-700 hover:via-yellow-400 hover:to-green-700 text-red-800 font-black text-3xl rounded-2xl transition-all shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 border-8 border-green-800 animate-pulse"
                 >
-                  🎲 Assign Secret Santas
+                  🎲 ASSIGN SECRET SANTAS! 🎲
                 </button>
                 {assignments.length > 0 && (
-                  <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
-                    Assignments have been made! Switch to &quot;View Assignments&quot; to see them.
+                  <p className="text-center text-xl font-bold text-green-700 mt-6 bg-yellow-300 p-4 rounded-xl border-4 border-green-600 shadow-lg">
+                    🎉 Assignments have been made! Switch to &quot;View Assignments&quot; to see them! 🎉
                   </p>
                 )}
               </div>
             )}
           </div>
         ) : (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
-              Secret Santa Assignments
+          <div className="bg-gradient-to-br from-yellow-200 via-red-100 to-green-200 rounded-2xl shadow-2xl p-8 border-8 border-yellow-400 relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute top-4 left-4 text-6xl animate-spin" style={{ animationDuration: '3s' }}>🎄</div>
+            <div className="absolute bottom-4 right-4 text-5xl animate-bounce">🎁</div>
+            
+            <h2 className="text-4xl font-bold text-red-700 mb-8 drop-shadow-lg flex items-center gap-3 relative z-10">
+              <span className="text-5xl">🎅</span> Secret Santa Assignments <span className="text-5xl">🎄</span>
             </h2>
             {assignments.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                <p className="text-lg mb-4">No assignments yet.</p>
-                <p className="text-sm">
-                  Go to &quot;Manage Participants&quot; and click &quot;Assign Secret Santas&quot; to create
-                  assignments.
+              <div className="text-center py-12 bg-white/90 rounded-xl border-4 border-dashed border-red-500 relative z-10">
+                <p className="text-3xl font-bold text-red-600 mb-4">🎁 No assignments yet! 🎁</p>
+                <p className="text-xl text-green-700 font-semibold">
+                  Go to &quot;Manage Participants&quot; and click &quot;Assign Secret Santas&quot; to create assignments! 🎉
                 </p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-6 relative z-10">
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Select your name to see your assignment:
+                  <label className="block text-2xl font-bold text-green-700 mb-4 drop-shadow-lg">
+                    🎯 Select your name to see your assignment:
                   </label>
                   <select
                     value={selectedParticipant || ''}
                     onChange={(e) => setSelectedParticipant(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    className="w-full px-6 py-4 border-4 border-green-600 rounded-xl focus:ring-4 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-green-800 font-bold text-lg shadow-2xl"
                   >
-                    <option value="">-- Select your name --</option>
+                    <option value="">-- 🎅 Select your name --</option>
                     {participants.map((p) => (
                       <option key={p.id} value={p.id}>
                         {p.name}
@@ -234,25 +290,24 @@ export default function SecretSanta() {
                 </div>
 
                 {selectedParticipant && (
-                  <div className="bg-gradient-to-br from-green-50 to-red-50 dark:from-green-900/20 dark:to-red-900/20 rounded-lg p-6 border-2 border-green-200 dark:border-green-800">
+                  <div className="bg-gradient-to-br from-green-300 via-yellow-300 to-red-300 rounded-2xl p-8 border-8 border-green-600 shadow-2xl transform hover:scale-[1.02] transition-transform">
                     <div className="text-center">
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                        You are Secret Santa for:
+                      <p className="text-2xl font-bold text-red-800 mb-4 drop-shadow-lg">
+                        🎁 You are Secret Santa for: 🎁
                       </p>
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                      <p className="text-5xl font-black text-green-800 mb-4 drop-shadow-lg animate-pulse">
                         {getAssignment(selectedParticipant)?.name}
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {getAssignment(selectedParticipant)?.email}
+                      <p className="text-xl font-bold text-red-700 bg-yellow-200 p-3 rounded-lg border-4 border-red-600 inline-block">
+                        📧 {getAssignment(selectedParticipant)?.email}
                       </p>
                     </div>
                   </div>
                 )}
 
-                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                    💡 Tip: Each person should select their own name to see their unique
-                    assignment. Keep it secret!
+                <div className="mt-8 pt-6 border-t-4 border-yellow-500">
+                  <p className="text-xl font-bold text-green-700 text-center bg-yellow-300 p-4 rounded-xl border-4 border-green-600 shadow-lg">
+                    💡 Tip: Each person should select their own name to see their unique assignment. Keep it secret! 🤫
                   </p>
                 </div>
               </div>
