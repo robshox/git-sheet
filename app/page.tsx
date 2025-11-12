@@ -314,6 +314,32 @@ export default function SecretSanta() {
             )}
           </div>
         )}
+
+        {/* CTA Section */}
+        <div className="mt-12 relative z-10">
+          <div className="bg-gradient-to-br from-yellow-300 via-red-200 to-green-300 rounded-2xl shadow-2xl p-8 border-8 border-yellow-400 relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute top-4 right-4 text-5xl animate-bounce">🚀</div>
+            <div className="absolute bottom-4 left-4 text-4xl animate-pulse">✨</div>
+            
+            <div className="text-center relative z-10">
+              <h2 className="text-4xl md:text-5xl font-bold text-red-800 mb-4 drop-shadow-lg">
+                🎓 Learn to Build with AI
+              </h2>
+              <p className="text-xl md:text-2xl text-green-800 font-semibold mb-6 drop-shadow-md">
+                Join the Switch Dimension community and course to master AI development! 🤖
+              </p>
+              <a
+                href="https://switchdimension.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-10 py-5 bg-gradient-to-r from-green-600 via-yellow-500 to-red-600 hover:from-green-700 hover:via-yellow-400 hover:to-red-700 text-white font-black text-2xl rounded-2xl transition-all shadow-2xl hover:shadow-green-500/50 transform hover:scale-110 border-6 border-green-800 animate-pulse"
+              >
+                🚀 Visit Switch Dimension 🚀
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
