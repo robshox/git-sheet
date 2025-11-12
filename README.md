@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Switch Dimension Secret Santa
+
+Organize your Secret Santa gift exchange in seconds. Add participants, generate fair assignments, and let each person privately view who they’re gifting to.
+
+This is a lightweight, single‑page app built with Next.js and Tailwind CSS. All data lives in memory (no database) so nothing is stored after a refresh.
+
+## Features
+
+- Add and remove participants (name + email)
+- One‑click random assignment (no one gets themselves)
+- Private reveal: each person selects their name to see only their assignment
+- Responsive UI with automatic dark mode
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- ESLint 9
 
 ## Getting Started
 
-First, run the development server:
+Prerequisites:
+- Node.js 18.18+ (or 20+ recommended)
+- npm (or your preferred package manager)
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev`: Start the Next.js dev server
+- `npm run build`: Create a production build
+- `npm start`: Start the production server
+- `npm run lint`: Run ESLint
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `app/page.tsx`: Main Secret Santa UI (participants, assignments, reveal)
+- `app/layout.tsx`: App metadata and global layout
+- `app/globals.css`: Tailwind and theme tokens
+- `public/`: Static assets
+- `next.config.ts`: Next.js configuration
+- `tsconfig.json`, `eslint.config.mjs`: TypeScript and ESLint configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How Assignments Work
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Participants are shuffled, then each person is assigned the next person in the list (circularly). This guarantees no self‑assignment and keeps the implementation simple. If you need advanced constraints (e.g., avoid pairing certain people), you can replace the assignment logic with a derangement algorithm that enforces your rules.
 
-## Deploy on Vercel
+## Limitations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- No persistence: reloading the page clears participants and assignments
+- Emails are collected for display only (no email sending configured)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+The app works great on Vercel:
+
+1. Push your repository to GitHub
+2. Import the repo in Vercel
+3. Deploy with the default Next.js settings
+
+For other platforms, build with `npm run build` and serve with `npm start`.
+
