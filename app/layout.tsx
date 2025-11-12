@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Secret Santa - Gift Exchange Organizer",
+  title: "Switch Dimension Secret Santa - Gift Exchange Organizer",
   description: "Organize your Secret Santa gift exchange with ease",
 };
 
